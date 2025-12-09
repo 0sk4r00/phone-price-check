@@ -3,21 +3,17 @@ package org.example;
 import org.example.helpFunctions.*;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
+
 import java.time.Duration;
-import java.util.List;
 
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.JavascriptExecutor;
 
 
 // Pamiętaj o ustawieniu zależności Selenium w pliku build.gradle!
 
 public class Main {
-    static void main(String[] args) {
+    public static void main(String[] args) {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless=new"); // <-- Najważniejsze: tryb bez okna
         options.addArguments("--no-sandbox");
