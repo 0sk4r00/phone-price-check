@@ -21,36 +21,28 @@ public class Color {
         List<WebElement> options = driver.findElements(
                 By.cssSelector("div[data-label='Kolor'] div.ss-list div.ss-option")
         );
-        System.out.println(options);
+// 4. Pętla szukająca PIERWSZEGO minusa
+        for (WebElement option : options) {
+            String text = option.getText();
 
-        if (options.isEmpty()) {
-            System.out.println("⚠️ Brak opcji do wyboru");
-            return;
-        }
-        WebElement first = options.getFirst();
-        String colorName = first.findElement(By.cssSelector("span[data-test-option]")).getText().trim();
-        boolean isSelected = first.getAttribute("class").contains("ss-option-selected");
-        boolean isDisabled = first.getAttribute("class").contains("ss-disabled");
+            // Debug - żebyś widział w konsoli co sprawdza
+            System.out.println("Sprawdzam: " + text);
 
-        // Sprawdź czy można kliknąć
-        if (isSelected) {
-            System.out.println("✅ Pierwszy element już wybrany - nic nie robię");
-            WebElement wrapperOpened = wait.until(ExpectedConditions.elementToBeClickable(
-                    By.cssSelector("div.ss-single-selected.ss-open-below")
-            ));
-            wrapperOpened.click();
-            return;
-        }
+            // Jeśli tekst zawiera minus "-"
+            if (text.contains("-")) {
+                System.out.println("✅ Znaleziono pierwszą opcję z minusem! Klikam w: " + text);
 
-        if (isDisabled) {
-            System.out.println("⚠️ Pierwszy element jest wyłączony - nie można kliknąć");
-            return;
+                // Klikamy w ten element
+                option.click();
+
+                // RETURN jest kluczowy - natychmiast wychodzi z metody,
+                // żeby nie klikać w kolejne ani nie zamykać listy na dole.
+                return;
+            }
         }
 
-        // Można kliknąć - kliknij!
-        System.out.println("Klikam w: " + colorName);
-        wait.until(ExpectedConditions.elementToBeClickable(first));
-        first.click();
-        System.out.println("✅ Wybrano: " + colorName);
+        // 5. Jeśli pętla się skończyła i nic nie kliknęliśmy (brak minusów)
+        System.out.println("ℹ️ Nie znaleziono żadnej opcji z minusem. Zamykam listę.");
+        wrapper.click();
     }
 }

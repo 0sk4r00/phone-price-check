@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'application'
 }
 
 group = 'org.example'
@@ -19,4 +20,12 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+
+application {
+    // <--- 2. TUTAJ JEST KLUCZOWY MOMENT
+    // Musisz wpisać pełną nazwę swojej klasy z metodą main.
+    // Jeśli plik Main.java jest w folderze src/main/java/org/example/
+    // to wpisz:
+    mainClass = 'org.example.Main'
 }

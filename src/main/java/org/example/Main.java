@@ -8,6 +8,7 @@ import org.openqa.selenium.WebElement;
 import java.time.Duration;
 import java.util.List;
 
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.JavascriptExecutor;
@@ -17,27 +18,33 @@ import org.openqa.selenium.JavascriptExecutor;
 
 public class Main {
     static void main(String[] args) {
-        WebDriver driver = new ChromeDriver();
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless=new"); // <-- Najważniejsze: tryb bez okna
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--disable-gpu");
+        options.addArguments("--window-size=1920,1080");
+        WebDriver driver = new ChromeDriver(options);
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        Price price = new Price();
+        Cookies cookies = new Cookies();
+        Battery battery = new Battery();
 
         try{
             driver.get("https://www.refurbed.pl/p/iphone-15/");
-            Cookies cookies = new Cookies();
             cookies.accept(wait);
+            battery.checkAndSetBattery(driver, "Nowy");
+            Thread.sleep(2000);
             Variant variant = new Variant();
             variant.checkAndClickLikeAVariant(driver, "Premium");
-            Thread.sleep(2000);
-            Battery battery = new Battery();
-            battery.checkAndSetBattery(driver, "Nowy");
             Thread.sleep(2000);
             Color color = new Color();
             color.selectCheapestColor(driver);
             Thread.sleep(2000 );
 //            variant.checkAndClickLikeAVariant(driver, "Jak nowe");
-            Price price = new Price();
             price.checkPrice(driver);
-            variant.checkAndClickLikeAVariant(driver, "Jak nowe");
-            Thread.sleep(2000);
+//            variant.checkAndClickLikeAVariant(driver, "Jak nowe");
+            Thread.sleep(2000); ;
 
             // Znajdź wrapper z data-test="product-attribute" i data-label="Wariant"
 //            WebElement wrapper = driver.findElement(
