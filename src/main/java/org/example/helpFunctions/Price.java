@@ -5,7 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 public class Price {
-    public void checkPrice(WebDriver driver){
+    public double checkPrice(WebDriver driver){
         WebElement priceElement = driver.findElement(
                 By.cssSelector("div[data-test='price-component'] p[data-test='product-price']")
         );
@@ -14,5 +14,6 @@ public class Price {
         price = price.replace(",", ".");
         double value = Double.parseDouble(price);
         System.out.println("Cena produktu: " + value);
+        return value;
     }
 }

@@ -3,8 +3,14 @@ package org.example;
 import org.example.helpFunctions.*;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import org.bson.Document;
 
 import java.time.Duration;
+import java.time.LocalDateTime;
 
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -25,8 +31,16 @@ public class Main {
         Price price = new Price();
         Cookies cookies = new Cookies();
         Battery battery = new Battery();
+        String connectionString = System.getenv("MONGO_URL");
+        if (connectionString == null || connectionString.isEmpty()) {
+            System.out.println("⚠️ Uruchomienie lokalne - używam fallback URL");
+            // Tu wklej ten link z hasłem, który masz w notatniku, żeby testować w IntelliJ:
+            connectionString = "mongodb+srv://admin:P0XYvSuhtjUOvybU@cluster0.mjspwdq.mongodb.net/?appName=Cluster0";
+        }
 
-        try{
+        try (MongoClient mongoClient = MongoClients.create(connectionString)){
+            MongoDatabase database = mongoClient.getDatabase("Sklep");
+            MongoCollection<Document> collection = database.getCollection("Iphony");
             driver.get("https://www.refurbed.pl/p/iphone-15/");
             cookies.accept(wait);
             battery.checkAndSetBattery(driver, "Nowy");
@@ -38,10 +52,17 @@ public class Main {
             color.selectCheapestColor(driver);
             Thread.sleep(2000 );
 //            variant.checkAndClickLikeAVariant(driver, "Jak nowe");
-            price.checkPrice(driver);
+            Double value = price.checkPrice(driver);
+            System.out.println(value);
 //            variant.checkAndClickLikeAVariant(driver, "Jak nowe");
-            Thread.sleep(2000); ;
-
+            Thread.sleep(2000);
+            Document wpisDoBazy = new Document()
+                    .append("data", LocalDateTime.now().toString())
+                    .append("model", "iPhone 15")
+                    .append("wariant", "Premium")
+                    .append("bateria", "Nowy")
+                    .append("cena", value);
+            collection.insertOne(wpisDoBazy);
             // Znajdź wrapper z data-test="product-attribute" i data-label="Wariant"
 //            WebElement wrapper = driver.findElement(
 //                    By.cssSelector("div[data-test='product-attribute'][data-label='Wariant']")
