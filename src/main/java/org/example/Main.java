@@ -35,7 +35,7 @@ public class Main {
         if (connectionString == null || connectionString.isEmpty()) {
             System.out.println("⚠️ Uruchomienie lokalne - używam fallback URL");
             // Tu wklej ten link z hasłem, który masz w notatniku, żeby testować w IntelliJ:
-            connectionString = "mongodb+srv://admin:P0XYvSuhtjUOvybU@cluster0.mjspwdq.mongodb.net/?appName=Cluster0";
+            connectionString = "sth";
         }
 
         try (MongoClient mongoClient = MongoClients.create(connectionString)){
