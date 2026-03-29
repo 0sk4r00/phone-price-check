@@ -12,8 +12,6 @@ import java.util.List;
 public class Variant {
     public void checkAndClickLikeAVariant(WebDriver driver, String variant) throws InterruptedException {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-//        try {
-            // 1. Sprawdź obecną wartość
             String currentValue = driver.findElement(
                     By.cssSelector("div[data-label='Wariant'] div.ss-single-selected")
             ).getText().trim();
@@ -23,7 +21,6 @@ public class Variant {
                 return;
             }
 
-//             2. Otwórz dropdown
             driver.findElement(
                     By.cssSelector("div[data-test='product-attribute'][data-label='Wariant']")
             ).click();
@@ -32,26 +29,20 @@ public class Variant {
                     By.cssSelector("div[data-label='Wariant'] div.ss-list")
             ));
 
-            // 3. Sprawdź czy opcja istnieje
         List<WebElement> options = driver.findElements(
                 By.xpath("//div[@data-label='Wariant']//span[contains(text(), '" + variant + "')]/ancestor::div[contains(@class, 'ss-option')]")
         );
 
             if (options.isEmpty()) {
-                // Opcja nie istnieje - zamknij dropdown i wyjdź
                 System.out.println("⚠️ Opcja '" + variant + "' nie istnieje - pomijam");
                 driver.findElement(
                         By.cssSelector("div[data-label='Wariant'] div.ss-single-selected")
                 ).click();
-                return;  // ← PO PROSTU WYJDŹ
+                return;
             }
 
-            // 4. Opcja istnieje - kliknij
             wait.until(ExpectedConditions.elementToBeClickable(options.getFirst())).click();
             System.out.println("✅ Wybrano: " + variant);
 
-//        } catch (Exception e) {
-//            System.out.println("⚠️ Nie można wybrać '" + variant + "' - pomijam" + e);
-//        }
     }
 }
