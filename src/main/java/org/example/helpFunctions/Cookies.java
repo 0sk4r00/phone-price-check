@@ -9,7 +9,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 
 public class Cookies {
-    public void accept(WebDriverWait wait) {
+    public static void accept(WebDriverWait wait) {
         By cookieButtonSelector = By.xpath("//span[text()='Akceptuj wszystkie pliki cookie']");
 
         try {
@@ -20,7 +20,7 @@ public class Cookies {
             acceptButton.click();
             System.out.println("Ciasteczka zaakceptowane.");
         } catch (TimeoutException e) {
-            System.out.println("Okno cookies nie pojawiło się – pomijam.");
+            System.out.println("Okno cookies nie pojawilo się – pomijam.");
         }
     }
 }
