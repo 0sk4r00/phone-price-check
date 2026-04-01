@@ -43,7 +43,6 @@ public class Helper {
             }
         }
 
-        // Obliczanie procentu: (sukcesy / wszystkie) * 100
         double successRate = (total > 0) ? ((double) successCount / total) * 100 : 0;
 
         System.out.println(String.format(">> Skuteczność: %.2f%%", successRate));
