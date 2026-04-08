@@ -1,25 +1,15 @@
 package org.example;
 
 import org.example.helpFunctions.*;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
-import org.bson.Document;
 
 import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.Map;
 
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import static org.example.helpFunctions.Helper.findCheapest;
 
 
 public class Main {
@@ -44,28 +34,10 @@ public class Main {
         );
 
         try {
-            System.out.println("--- SPRAWDZANIE IPHONE 15 ---");
             ScrapingReport scrapingReport = Helper.findCheapest(driver, wait, iphone15);
-            System.out.println(scrapingReport.bestColor());
-            System.out.println(scrapingReport.bestPrice());
-//            Document wpisDoBazy = new Document()
-//                    .append("data", LocalDateTime.now().toString())
-//                    .append("color", priceResult.color())
-//                    .append("model", "iPhone 15")
-//                    .append("wariant", "Jak nowe")
-//                    .append("bateria", "Optymalny")
-//                    .append("cena", priceResult.price());
-//            collection.insertOne(wpisDoBazy);
-
-            System.out.println("\n--- SPRAWDZANIE IPHONE 15 PRO ---");
+            Mongo.saveDataInDb("iphone 15", scrapingReport.bestPrice(), scrapingReport.successRate(),scrapingReport.bestColor());
             ScrapingReport scrapingReport1 = Helper.findCheapest(driver, wait, iphone15Pro);
-//            Document wpisDoBazy = new Document()
-//                    .append("data", LocalDateTime.now().toString())
-//                    .append("model", "iPhone 15")
-//                    .append("wariant", "Premium")
-//                    .append("bateria", "Nowy")
-//                    .append("cena", value);
-//            collection.insertOne(wpisDoBazy);
+            Mongo.saveDataInDb("iphone 15 pro", scrapingReport1.bestPrice(), scrapingReport1.successRate(),scrapingReport1.bestColor());
 
         } finally {
             driver.quit();
