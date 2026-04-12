@@ -15,7 +15,9 @@ import java.util.Date;
 
 public class Mongo {
     public static void saveDataInDb(String model, double price, double successRate, String color) {
-        Dotenv dotenv = Dotenv.load();
+        Dotenv dotenv = Dotenv.configure()
+                .ignoreIfMissing()
+                .load();
 
         String user = System.getenv("MONGO_USER");
         String pass = System.getenv("MONGO_PASS");
