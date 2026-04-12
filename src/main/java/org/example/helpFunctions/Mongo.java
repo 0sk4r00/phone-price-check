@@ -17,9 +17,17 @@ public class Mongo {
     public static void saveDataInDb(String model, double price, double successRate, String color) {
         Dotenv dotenv = Dotenv.load();
 
-        // Pobranie wartości
-        String user = dotenv.get("MONGO_USER");
-        String pass = dotenv.get("MONGO_PASS");
+        String user = System.getenv("MONGO_USER");
+        String pass = System.getenv("MONGO_PASS");
+
+        if (user == null || user.isEmpty()) {
+            user = dotenv.get("MONGO_USER");
+        }
+
+        if (pass == null || pass.isEmpty()) {
+            pass = dotenv.get("MONGO_PASS");
+        }
+
         String connectionString = String.format("mongodb+srv://%s:%s@cluster0.mjspwdq.mongodb.net/?appName=Cluster0",user, pass);
         ServerApi serverApi = ServerApi.builder()
                 .version(ServerApiVersion.V1)
