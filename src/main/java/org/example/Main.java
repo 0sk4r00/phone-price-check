@@ -11,9 +11,8 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 
-
 public class Main {
-    static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless=new");
         options.addArguments("--no-sandbox");
